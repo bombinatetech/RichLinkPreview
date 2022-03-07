@@ -159,17 +159,19 @@ public class RichPreview {
     }
 
     private String resolveURL(String url, String part) {
+        url = url.trim();
+        part = part.trim();
         if(URLUtil.isValidUrl(part)) {
             return part;
         } else {
             URI base_uri = null;
             try {
                 base_uri = new URI(url);
-            } catch (URISyntaxException e) {
+                base_uri = base_uri.resolve(part);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            base_uri = base_uri.resolve(part);
-            return base_uri.toString();
+            return base_uri != null ? base_uri.toString() : null;
         }
     }
 
